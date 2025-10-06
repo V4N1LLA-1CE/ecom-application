@@ -3,6 +3,7 @@ package com.app.ecom;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,5 +27,10 @@ public class UserController {
   @PostMapping("/api/users")
   public void createUser(@RequestBody User user) {
     userService.createUser(user);
+  }
+
+  @GetMapping("/api/users/{id}")
+  public User getUser(@PathVariable Long id) {
+    return userService.fetchUser(id);
   }
 }
