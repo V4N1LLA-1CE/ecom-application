@@ -2,6 +2,8 @@ package com.app.ecom;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,17 +22,23 @@ public class UserController {
   private final UserService userService;
 
   @GetMapping("/api/users")
-  public List<User> getAllUsers() {
-    return userService.fetchAllUsers();
+  public ResponseEntity<List<User>> getAllUsers() {
+    List<User> users = userService.fetchAllUsers();
+    return new ResponseEntity<>(users, HttpStatus.OK);
   }
 
   @PostMapping("/api/users")
-  public void createUser(@RequestBody User user) {
+  public ResponseEntity<Void> createUser(@RequestBody User user) {
     userService.createUser(user);
+    return new ResponseEntity<>(null, HttpStatus.CREATED);
   }
 
   @GetMapping("/api/users/{id}")
-  public User getUser(@PathVariable Long id) {
-    return userService.fetchUser(id);
+  public ResponseEntity<User> getUser(@PathVariable Long id) {
+    User user = userService.fetchUser(id);
+    if (user == null) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(user);
   }
 }
