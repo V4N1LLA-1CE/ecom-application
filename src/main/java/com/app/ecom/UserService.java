@@ -29,4 +29,17 @@ public class UserService {
         .filter(user -> user.getId().equals(id))
         .findFirst();
   }
+
+  public boolean updateUser(Long id, User updatedUserDetails) {
+    // get current user then update with new values
+    return userList.stream()
+        .filter(user -> user.getId().equals(id))
+        .findFirst()
+        .map(user -> {
+          user.setFirstName(updatedUserDetails.getFirstName());
+          user.setLastName(updatedUserDetails.getLastName());
+          return true;
+        })
+        .orElse(false);
+  }
 }

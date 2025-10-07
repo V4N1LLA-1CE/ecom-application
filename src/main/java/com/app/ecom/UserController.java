@@ -1,10 +1,12 @@
 package com.app.ecom;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,5 +40,11 @@ public class UserController {
     return userService.fetchUser(id)
         .map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.notFound().build());
+  }
+
+  @PatchMapping("/api/users/{id}")
+  public ResponseEntity<Void> updateUser(@PathVariable Long id, @RequestBody User user) {
+    return userService.updateUser(id, user) ? ResponseEntity.ok(null)
+        : ResponseEntity.notFound().build();
   }
 }
